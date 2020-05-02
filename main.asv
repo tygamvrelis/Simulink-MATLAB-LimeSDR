@@ -1,0 +1,21 @@
+clear dev;
+fc = 740e6;
+fs = 30.72e6;
+dt = 1 / fs;
+duration = 100e-3;
+
+dev = limeSDR();
+dev.rx0.frequency = fs;
+dev.rx0.samplerate = fs;
+dev.rx0.enable;
+dev.start();
+
+samples = dev.receive(fs * duration,0);
+dev.stop();
+
+N = length(samples);
+Yf = fft(samples);
+Yfs = circshift(Yf, N/2);
+df = 1 / (N * dt);
+f = (fc - df * (N / 2) + d
+plot(

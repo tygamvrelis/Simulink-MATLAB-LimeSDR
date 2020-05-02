@@ -285,7 +285,7 @@ classdef limeSDR < handle
                 rx_stream=obj.rx0_stream;
                 if isempty(rx_stream)
                     error('rx0 stream not enabled');
-                end
+
             end
             
             [actual_count, ~, f32, ~]=calllib('libLimeSuite', 'LMS_RecvStream', rx_stream,f32,num_samples,metad,timeout_ms);

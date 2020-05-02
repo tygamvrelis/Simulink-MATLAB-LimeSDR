@@ -241,10 +241,13 @@ classdef limeSDR < handle
             
             obj.versions.library_version=char(calllib('libLimeSuite', 'LMS_GetLibraryVersion'));
             
+%             obj.rx0 = limeSDR_XCVR(obj, 'RX',0);
+%             obj.rx1 = limeSDR_XCVR(obj, 'RX',1);
+%             obj.tx0 = limeSDR_XCVR(obj, 'TX',0);
+%             obj.tx1 = limeSDR_XCVR(obj, 'TX',1); 
+            % LimeSDR mini only has 2 ports
             obj.rx0 = limeSDR_XCVR(obj, 'RX',0);
-            obj.rx1 = limeSDR_XCVR(obj, 'RX',1);
-            obj.tx0 = limeSDR_XCVR(obj, 'TX',0);
-            obj.tx1 = limeSDR_XCVR(obj, 'TX',1);            
+            obj.tx0 = limeSDR_XCVR(obj, 'TX',0);   
             obj.running= false;
             
         end

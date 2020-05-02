@@ -1,8 +1,7 @@
 clear dev;
-fc = 740e6;
+fc = 90e6;
 fs = 30.72e6;
-dt = 1 / fs;
-duration = 100e-3;
+capture_duration = 10e-3;
 
 dev = limeSDR();
 dev.rx0.frequency = fs;
@@ -10,12 +9,36 @@ dev.rx0.samplerate = fs;
 dev.rx0.enable;
 dev.start();
 
-samples = dev.receive(fs * duration,0);
+%% Loop capture
+DISP_TIME_SEC = 10;
+tt = 0;
+figure;
+xlabel('Frequency (MHz)');
+title('Absolute value');
+while tt < DISP_TIME_SEC
+    samples = dev.receive(fs * capture_duration, 0);
+    N = length(samples);
+    Yf = fft(samples);
+    Yfs = fftshift(Yf);
+    dt = 1 / fs;
+    df = 1 / (N * dt);
+    f = (fc - (N * df / 2) + (0:N-1) * df) / 1e6;
+    plot(f, abs(Yfs));
+end
+
+%% Single capture
+disp("Starting capture");
+samples = dev.receive(fs * capture_duration, 0);
+disp("Ending capture");
 dev.stop();
 
 N = length(samples);
 Yf = fft(samples);
-Yfs = circshift(Yf, N/2);
+Yfs = fftshift(Yf);
+dt = 1 / fs;
 df = 1 / (N * dt);
-f = (fc - df * (N / 2) + d
-plot(
+f = (fc - (N * df / 2) + (0:N-1) * df) / 1e6;
+figure;
+plot(f, abs(Yfs));
+xlabel('Frequency (MHz)');
+title('Absolute value');
